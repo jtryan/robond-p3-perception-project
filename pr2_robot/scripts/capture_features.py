@@ -14,8 +14,6 @@ from sensor_stick.srv import GetNormals
 from geometry_msgs.msg import Pose
 from sensor_msgs.msg import PointCloud2
 
-TEST_WORLD_NUM = 3
-
 def get_normals(cloud):
     get_normals_prox = rospy.ServiceProxy('/feature_extractor/get_normals', GetNormals)
     return get_normals_prox(cloud).cluster
@@ -39,14 +37,14 @@ if __name__ == '__main__':
     # ]
 
     models = [
-        'sticky_notes',
-        'book',
-        'snacks',
-        'biscuits',
-        'eraser',
-        'soap2',
-        'soap',
-        'glue',
+       'biscuits',
+       'soap',
+       'soap2',
+       'book',
+       'glue',
+       'sticky_notes',
+       'eraser',
+       'snacks',
     ]
 
     # Disable gravity and delete the ground plane
@@ -56,11 +54,11 @@ if __name__ == '__main__':
     for model_name in models:
         spawn_model(model_name)
 
-        for i in range(300):
+        for i in range(200):
             # make 200 attempts to get a valid a point cloud then give up
             sample_was_good = False
             try_count = 0
-            while not sample_was_good and try_count < 5:
+            while not sample_was_good and try_count < 200:
                 sample_cloud = capture_sample()
                 sample_cloud_arr = ros_to_pcl(sample_cloud).to_array()
 
@@ -80,5 +78,4 @@ if __name__ == '__main__':
 
         delete_model()
 
-
-    pickle.dump(labeled_features, open('training_set_%s.sav' % TEST_WORLD_NUM, 'wb'))
+    pickle.dump(labeled_features, open('training_set.sav', 'wb'))
