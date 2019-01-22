@@ -115,7 +115,7 @@ def pcl_callback(pcl_msg):
     extracted_outliers = cloud_filtered.extract(inliers, negative=True)
 
     ### Euclidean Clustering
-    # Go from XYZRGB to RGB since to build the k-d tree we only needs spatial data
+    # Go from XYZRGB to RGB since to build the k-d tree we only need spatial data
     white_cloud = XYZRGB_to_XYZ(extracted_outliers)
     # Apply function to convert XYZRGB to XYZ
     tree = white_cloud.make_kdtree()
@@ -202,11 +202,7 @@ def pcl_callback(pcl_msg):
     detected_objects_pub.publish(detected_objects)
 
 
-    # Suggested location for where to invoke your pr2_mover() function within pcl_callback()
-    # Could add some logic to determine whether or not your object detections are robust
-    # before calling pr2_mover()
-
-    # Add  atest to ensure the pick list and the detected list match
+    # Add  a test to ensure the pick list and the detected list match
     object_list_param = rospy.get_param('/object_list')
     pick_list_objects = []
     for i in range(len(object_list_param)):
@@ -237,7 +233,7 @@ def pr2_mover(object_list):
     object_list_param = rospy.get_param('/object_list')
     box_param = rospy.get_param('/dropbox')
 
-    # #????
+    # refactor?
     # left_dropbox    = box_param[0]['position']
     # right_dropbox   = box_param[1]['position']
 
@@ -252,6 +248,7 @@ def pr2_mover(object_list):
 
 
     # TODO: Rotate PR2 in place to capture side tables for the collision map
+    # Not performed in this iteration
 
     # With each iteration over the pick list, you can create a dictionary with the above 
     # function and then generate a list of dictionaries containing all your ROS service request messages.ie.e
